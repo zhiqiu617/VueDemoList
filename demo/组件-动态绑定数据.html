@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件-动态绑定数据</title>
+</head>
+<body>
+    <!-- 组件是一个单独功能模块的封装，这个模块有属于自己的HTML模板，故也会有属于自己的数据data -->
+    <!-- 所以组件不能直接访问到Vue实例中的数据 -->
+    <div id="app1">
+        <cpn1></cpn1>
+        
+        <!-- 多次使用同一个组件的情况下，数据对象不同，可以互不干扰 -->
+        <cpn2></cpn2>
+        <cpn2></cpn2>
+        <cpn2></cpn2>
+    </div>
+
+    <template id="cpn1">
+        <div>
+            <h1>组件-动态绑定数据</h1>
+            <h2>{{title}}</h2>
+        </div>
+    </template>
+
+    <template id="cpn2">
+        <div>
+            <h3>{{counter}}</h3>
+            <button @click="decrement">-</button>
+            <button @click="increment">+</button>
+        </div>
+    </template>
+
+    <script src="../vue/vue.js"></script>
+    <script>
+        // 注册一个全局组件
+        // 组件的data必须是一个函数，返回一个对象，对象内部存放数据
+        Vue.component('cpn1',{
+            template: '#cpn1',
+            data() {
+                return {
+                    title: '数据绑定测试'
+                }
+            }
+        })
+
+        // 与Vue实例不同，组件的data为一个函数，这样子可以让组件每次被使用的时候，都能有一个独立的数据对象
+        // 这与函数的特性有关，每次调用函数时，都会创建一个新对象，函数的每次使用都是独立的
+        // 若组件的data为一个对象，则每次使用组件所获取的都是同一对象，数据修改会全部同步进行
+        Vue.component('cpn2',{
+            template: '#cpn2',
+            data() {
+                return {
+                    counter: 0
+                }
+            },
+            methods: {
+                decrement() {
+                    this.counter--
+                },
+                increment() {
+                    this.counter++
+                }
+            }
+        })
+        
+        const app1 = new Vue({
+            el: '#app1'
+        })
+    </script>
+</body>
+</html>

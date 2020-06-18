@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .colorChange {
+            color: red;
+        }
+        .active {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <!-- 点击某一项，该项变成红色 -->
+    <div id="app">
+        <ul>
+            <li v-for = "(item,index) in movies" :class = "{colorChange: item.finalColor}" 
+                v-on:click = "changeColor(index)">
+                {{index}} --- {{item.name}}
+            </li>
+        </ul>
+        <!-- 案例 -->
+        <ul>
+            <li v-for = "(item,index) in movies2" :class = "{active: index === currentIndex}"
+                v-on:click = "liClick(index)">{{item}}</li>
+        </ul>
+    </div>
+
+    <script src = "../vue/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                title: 'v-for与v-bind的结合使用',
+                movies: [
+                    {name: '楚门的世界', finalColor: false},
+                    {name: '大话西游', finalColor: false},
+                    {name: '狗镇', finalColor: false},
+                    {name: '湮灭', finalColor: false}
+                ],
+                // 案例
+                movies2: ['楚门的世界', '大话西游', '狗镇', '湮灭'],
+                currentIndex: -1
+            },
+            methods: {
+                changeColor:function(index) {
+                    console.log(index);
+                    this.movies[index].finalColor = !this.movies[index].finalColor
+                },
+                // 案例
+                liClick(index) {
+                    this.currentIndex = index
+                }
+            }
+        })
+    </script>
+</body>
+</html>

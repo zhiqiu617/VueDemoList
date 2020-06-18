@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id = "app">
+        <!-- v-show与v-if的使用相似，也决定一个元素是否渲染 -->
+        <!-- 当需要频繁的显示与隐藏切换时选择v-show，若只变一次则使用v-if -->
+        <!-- v-show  当条件为false时，v-show会给标签添加一个行内样式：display：none -->
+        <h2 v-show = "isShow">{{message1}}</h2>
+        <!-- v-if  当条件为false时，包含v-if的元素将不会出现在dom中 -->
+        <h2 v-if = "isShow">{{message2}}</h2>
+    </div>
+    <script src = "../vue/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                message1: 'v-show的使用',
+                message2: 'v-if的使用',
+                isShow: true
+            }
+        })
+    </script>
+</body>
+</html>

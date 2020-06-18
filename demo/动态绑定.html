@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id = "app">
+        <h1>{{title}}</h1>
+        <!-- 动态绑定v-bind -->
+        <!-- v-bind的语法糖为“：” -->
+        <!-- 错误做法：<img v-bind:src="{{picUrl}}" alt="">，此处不用mustache -->
+        <img v-bind:src="picUrl" alt="">
+        <a v-bind:href="aUrl">{{tag}}</a>
+
+        <!-- v-bind绑定class,使得class动态使用 -->
+        <!-- 对象语法，即:class后面跟的是一个对象 -->
+        <!-- 可以直接通过{}绑定一个类，也可以通过判断传入多个值 -->
+        <!-- <h2 :class = "{类名1: boolean, 类名2: boolean}">{{message}}</h2> -->
+        <h2 :class = "{active: isActive, line: isLine}">{{message}}</h2>
+        <button v-on:click = "btnClick">转换布尔值</button>
+        <!-- 若过于复杂，可以先放在一个methods或computed中，在返回 -->
+        <h2 class = "hClass" :class= "getClasses()">{{message}}</h2>
+
+        <!-- 数组语法，即:class后面跟的是一个数组（较少使用） -->
+        <!-- 有引号时被当做字符串，无引号时被当做变量 -->
+        <h3 :class = "['active', 'line']">{{message}}</h3>
+        <h3 :class = "[active, line]">{{message}}</h3>
+        <h3 :class = "getClasses2()">{{message}}</h3>
+
+        <!-- v-bind绑定style -->
+        <!-- 对象语法 -->
+        <!-- <h4 :style = "{key: value}">{{message}}</h4> , 其中key为CSS属性名称-->
+        <!-- 50px要加引号，否则将被当做变量; key有两种写法，一是原先的CSS属性名，但要加引号，二是驼峰命名法，无需引号 -->
+        <h4 :style = "{'font-size': '50px'}">{{message2}}</h4>
+        <h4 :style = "{fontSize: '50px'}">{{message2}}</h4>
+        <h4 :style = "{fontSize: finalSize + 'px'}">{{message2}}</h4>
+        <h4 :style = "{fontSize: finalSize + 'px', color: finalColor}">{{message2}}</h4>
+        <h4 :style = "getStyle()">{{message2}}</h4>
+
+        <!-- 数组语法 -->
+        <h4 :style = "[style1, style2]">{{message2}}</h4>
+    </div>
+    <script src = "../vue/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                title: '动态绑定操作',
+                tag: '了解一下',
+                picUrl: 'https://hbimg.huabanimg.com/3f8bb7d8d4ebc4eef957f3731efd7c3f7dc9090124cb6-FMuljq_fw658/format/webp',
+                aUrl: 'https://www.bilibili.com/read/cv6130683',
+                message: 'Hello , welcome!',
+                message2: 'Hello , EG!',
+                isActive: true,
+                isLine: true,
+                isActive2: true,
+                active: 'abc',
+                line: 'def',
+                finalSize: 100,
+                finalColor: 'blue',
+                style1: {fontSize: '60px'},
+                style2: {color: 'red'}
+            },
+            methods: {
+                btnClick:function() {
+                    this.isActive = !this.isActive
+                },
+
+                // 返回类
+                getClasses:function() {
+                    return {active: this.isActive2, line: this.isLine}
+                },
+                getClasses2:function() {
+                    return [this.active, this.line]
+                },
+                getStyle:function() {
+                    return {fontSize: this.finalSize + 'px', color: this.finalColor}
+                }
+            }
+        })
+    </script>
+</body>
+</html>

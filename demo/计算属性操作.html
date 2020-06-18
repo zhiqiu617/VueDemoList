@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h2>{{title}}</h2>
+        <!-- 计算属性 -->
+        <!-- 使用methods或computed可以得到一样的结果，但computed本质上被当做属性在用，故后面不跟括号 -->
+        <!-- 两者区别在于计算属性computed会进行缓存，若多次使用，computed只会调用一次，但如果中途改变值则会被清除缓存，再调用一次 -->
+        <!-- 每个计算属性都有默认的getter和setter方法,可以重写 -->
+        <h4>{{getFullString()}}</h4>
+        <h3>{{fullString}}</h3>
+        <!-- 运用computed计算书本总价格 -->
+        <ul>
+            <li v-for = "(item,index) in book">{{index}} --- {{item.name}} --- ￥{{item.price}}</li>
+            <p>总价格： {{sum1}}</p>
+            <p>总价格： {{sum2}}</p>
+            <p>总价格： {{sum3}}</p>
+        </ul>
+        <h3>{{fullString0}}</h3>
+    </div>
+    <script src = "../vue/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                title: '计算属性操作',
+                str1: 'Hello',
+                str2: 'World',
+                str3: 'Vue',
+                str4: 'JS',
+                book: [
+                    {id: 001, name: '数据结构', price: 48},
+                    {id: 002, name: '现代操作系统', price: 100},
+                    {id: 003, name: '数据库应用', price: 90},
+                    {id: 004, name: 'Java详解', price: 87},
+                    {id: 005, name: '前端开发教程', price: 99},
+                ]
+            },
+            computed: {
+               
+                //计算属性完整写法，每个计算属性拥有getter和setter方法，但是一般用不到setter，故可以看做是只读属性，从而简写
+                fullString0: {
+                    get: function() {
+                        return this.str3 + ' ' + this.str4
+                    },
+                    set: function(newValue) {
+                        const str = newValue.split(' ');  //拆分字符串
+                        this.str3 = str[0];
+                        this.str4 = str[1];
+                    }
+                },
+                 
+                fullString:function() {
+                    return this.str1 + ' ' + this.str2
+                },
+                sum1:function() {
+                    let result = 0;
+                    // for循环需要跟踪计数器和退出条件
+                    for(let i = 0; i < this.book.length; i++){
+                        result += this.book[i].price
+                    }
+                    return result
+                },
+                sum2:function() {
+                    let result = 0;
+                    // for...in 循环循环访问所有可枚举的属性；它消除了跟踪技术器和退出条件，但是依然需要使用 index 来访问数组的值
+                    for(let i in this.book){
+                        result += this.book[i].price
+                    }
+                    return result
+                },
+                sum3:function() {
+                    let result = 0;
+                    // for...of 循环用于循环访问任何可迭代的数据类型。编写方式和 for...in 循环的基本一样，可以忽略索引。
+                    for(let b of this.book){
+                        result += b.price
+                    }
+                    return result
+                }
+            },
+            methods: {
+                getFullString() {
+                    return this.str1 + ' ' + this.str2
+                }
+            }
+        }) 
+    </script>
+</body>
+</html>

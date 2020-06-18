@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id = "app">{{name}}</div>
+    <script src = "../vue/vue.js"></script>
+    <script>
+        //编程范式：声明式编程
+        const app = new Vue({
+            el: '#app',  //用于挂载要管理的元素
+            data: {  //定义数据
+                name: 'Hello VueJS !'  //在浏览器控制台，在console中输入app.name可显示值，修改可以同步修改到页面
+            }
+        })
+
+        /**
+         * 元素JS的做法（编程范式：命令式编程）：
+         * 1. 创建div元素，设置id属性
+         * 2. 定义一个变量叫name
+         * 3. 将name变量放入div元素中显示
+         * 4. 修改name数据：测试修改
+         * 5. 将修改后的name重新替换到div元素中
+         */
+
+    </script>
+</body>
+</html>

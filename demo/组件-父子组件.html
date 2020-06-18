@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>父组件与子组件</title>
+</head>
+<body>
+    <!-- 组件化---将一个页面分成多个组件，每个组件还可以进行细分,形成上下层，即父组件与子组件关系 -->
+
+    <div id="app1">
+        <!-- 组件必须注册后才能使用，此处cpn1作为子组件放入cpn2中，若只有cpn2被注册，挂靠到app1实例，则cpn1无效 -->
+        <cpn1></cpn1>
+
+        <cpn2></cpn2>
+    </div>
+
+    <script src="../vue/vue.js"></script>
+    <script>
+        // 子组件
+        const cpnC1 = Vue.extend({
+            template: 
+                `<div>
+                    <h2>组件的简单创建与使用</h2>
+                    <p>子组件</p>
+                </div>`
+        })
+        // 父组件，将cnpC1放进构造器，使其成为cnpC2的子组件
+        // 当子组件注册到父组件的component时，Vue会编译好父组件的模块，该模板已决定父组件要被渲染到HTML中（其中包含子组件内容）
+        // 若子组件没有另外注册，则只有父组件可以识别子组件，这样子组件会被浏览器忽略
+        const cpnC2 = Vue.extend({
+            template: 
+            `   <div>
+                    <h2>组件的简单创建与使用</h2>
+                    <p>父组件</p>
+                    <cpn1></cpn1>
+                </div>
+            `,
+            components: {
+                cpn1: cpnC1
+            }
+        })
+
+        // root组件
+        const app1 = new Vue({
+            el: '#app1',
+            components: {
+                cpn2: cpnC2,
+                // cpn1作为子组件的同时，若也注册挂靠到app1实例中时，可作为普通局部组件使用
+                cpn1: cpnC1
+            }
+        })
+    </script>
+</body>
+</html>

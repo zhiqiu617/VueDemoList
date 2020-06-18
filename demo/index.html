@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var n = 'abc'
+        function fun1() {
+            console.log('1---',n);  
+        }
+
+        function fun2() {
+            var n = 'def';
+            console.log('2---',n);   //def
+            fun1();   //abc，因为没有特定调用者，所以fun1()的调用者是window
+        }
+        fun2();
+
+
+        function fun3() {
+            var n = 'ghi'
+            fun1(n);   //abc，此处传入n，但是fun1()本身没有接收的形参
+        }
+        fun3();  
+
+        function fun4() {
+            var n = 'xyz';
+            function fun5() {
+                console.log(n);   //xyz，fun4()是一个有着一个字符串变量n和一个函数fun5()的闭包，故没有定义变量n的fun5()输出看他的上一级，也就是fun4()的变量n
+            }
+            return fun5;
+        }
+        var f = fun4();
+        f();
+
+        console.log('3---',n);   //abc
+    </script>
+</body>
+</html>

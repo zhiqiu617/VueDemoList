@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 设置为隐藏后，在编译完成之前，内容被隐藏，而不是将未编译的值直接显示 */
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id = "app">
+        <!-- 插值操作 -->
+        <!-- 1. mustache语法中，不仅可以写变量，还可以写简单表达式 -->
+        <h1>{{title}}</h1>
+        <h6>{{str1}} {{str2}}</h6>
+        <h6>{{str1 + str2}}</h6>
+        <h6>{{str1 + ' ' + str2}}</h6>
+        <h6>{{counter * 2}}</h6>
+        <!-- 2. v-once,限定该元素不可修改，只渲染一次;在console中测试修改str3的值，只有第一个有变化 -->
+        <h5>{{str3}}</h5>
+        <h5 v-once>{{str3}}</h5>
+        <!-- 3. v-html,编译时会将变量认作HTML语句编译，其中的标签会自动识别 -->
+        <h4>{{addresses}}</h4>
+        <h4 v-html = "addresses"></h4>
+        <!-- 4. v-text,效果与mustache相似，但是灵活性不足，会出现内容覆盖的情况;第二个例子中的“ ， twice”被覆盖 -->
+        <h3>{{str3}} , twice</h3>
+        <h3 v-text = "str3"> , twice</h3>
+        <!-- 5. v-pre, 跳过vue的编译，直接输出原始值;例子输出结果就是“{{str3}}”-->
+        <h2 v-pre>{{str3}}</h2>
+    </div>
+    <div id = "app2" v-cloak>
+        <!-- 6. v-cloak(斗篷),这个指令保持在元素上直到关联实例结束编译。 -->
+        <!-- 和 CSS 规则如 [v-cloak] { display: none } 一起用时，这个指令可以隐藏未编译的 Mustache 标签直到实例准备完毕。 -->
+        <!-- 若不设置v-cloak样式为隐藏，则会在结束编译之前，一直显示为{{title2}} -->
+        {{title2}}
+    </div>
+
+    <script src = "../vue/vue.js"></script>
+    <script>
+        let app = new Vue({
+            el: '#app',
+            data: {
+                title: '插值操作的应用',
+                str1: 'hello',
+                str2: 'VueJS',
+                str3: 'once',
+                counter: 100,
+                addresses: '<a href = "http://www.baidu.com">百度一下</a>'
+            }
+        });
+        
+        //vue编译之前，div标签中含有v-cloak属性，编译之后，div标签中没有v-cloak属性
+        setTimeout(() => {
+            let app = new Vue({
+            el: '#app2',
+            data: {
+                title2: 'v-cloak的使用'
+            }
+        })
+        }, 2000);
+    </script>
+</body>
+</html>

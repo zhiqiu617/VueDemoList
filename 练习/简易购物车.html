@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图书购物车</title>
+    <style>
+        table{
+            border-collapse:collapse;
+        }
+        table, th, td{
+            border: 1px solid rgb(172, 171, 171);
+        }
+        th {
+            background-color: rgb(226, 226, 226);
+            height: 30px;
+            padding: 10px;
+        }
+        td {
+            height: 30px;
+            padding: 10px;
+        }
+        button {
+            background-color: white;
+            border: 1px solid rgb(97, 97, 97);
+            border-radius: 18%;
+            -moz-border-radius: 18%; /* Old Firefox */
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div v-if="books.length">
+            <table>
+                <tr>
+                    <th></th>
+                    <th>书籍名称</th>
+                    <th>出版日期</th>
+                    <th>价格</th>
+                    <th>购买数量</th>
+                    <th>操作</th>
+                </tr>
+                <tr v-for="(item,index) in books" v-if="item.isBuy">
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.date}}</td>
+                    <!-- <td>￥ {{item.price}}</td> -->
+                    <!-- 修改数字显示格式 -->
+                    <!-- （1）直接调用toFixed()方法转换为字符串显示 -->
+                    <!-- <td>￥ {{item.price.toFixed(2)}}</td -->
+                    <!-- （2）将（1）中的方法放入methods后调用 -->
+                    <!-- <td>{{getFinalPrice(item.price)}}</td> -->
+                    <!-- （3）使用Vue的过滤器 -->
+                    <td>{{item.price | showPrice}}</td>
+                    <td>
+                        <!-- 通过绑定disabled，当数量为1时不能再减少数量 -->
+                        <button @click="sub(index)" :disabled="item.count <= 1">-</button>
+                        {{item.count}}
+                        <button @click="add(index)">+</button>
+                    </td>
+                    <td>
+                        <!-- <button @click="detach(index)">移除</button> -->
+                        <!-- 移除可以直接对数组操作,这样移除全部后可以更简单的显示购物车为空 -->
+                        <button @click="removeHolder(index)">移除</button>                        
+                    </td>
+                </tr>
+            </table>
+            <!-- <p>总价：{{sum}}</p> -->
+            <p>总价：{{sum | showPrice}}</p>
+        </div>
+
+        <h2 v-else>购物车为空</h2>
+    </div>
+    
+
+    <script src="../vue/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                books: [
+                    // isBuy标识可省，若移除直接对数组进行删除
+                    {id: '1', name: '《算法导论》', date: '2006-9', price: 85.00, count: 1, isBuy: true},
+                    {id: '2', name: '《UNIX编程艺术》', date: '2006-2', price: 59.00, count: 1, isBuy: true},
+                    {id: '3', name: '《编程珠玑》', date: '2008-10', price: 39.00, count: 1, isBuy: true},
+                    {id: '4', name: '《代码大全》', date: '2006-3', price: 128.00, count: 1, isBuy: true}
+                ]                
+            },
+            computed: {
+                sum() {
+                    let result = 0;
+                    // 四种方式实现计算总价
+                    // 1. 普通for循环
+                    // for(let i = 0; i < this.books.length; i++) {
+                    //     if(this.books[i].isBuy) {
+                    //         result += this.books[i].price * this.books[i].count
+                    //     }
+                    // }
+                    // 2. for(let i in this.books)
+                    // for(let i in this.books) {
+                    //     result += this.books[i].price * this.books[i].count
+                    // }
+                    // 3. for(let item of this.books)
+                    // for(let item of this.books) {
+                    //     result += item.price * item.count
+                    // }                    
+                    // return result;
+                    
+                    // 4. reduce()汇总，preValue为上一个值，book为每次遍历取出的数组对象，0为默认值
+                    return this.books.reduce(function(preValue,book){
+                        return preValue + book.price * book.count
+                    },0)
+
+                }
+            },
+            methods: {
+                sub(index) {
+                    this.books[index].count--
+                },
+                add(index) {
+                    this.books[index].count++
+                },
+                detach(index) {
+                    this.books[index].isBuy = false
+                },
+
+                // 修改数字显示格式
+                getFinalPrice(price) {
+                    // .toFixed()方法会将数字转换为字符串
+                    return '￥' + price.toFixed(2)
+                },
+                // 移除，直接从数组中删去
+                removeHolder(index) {
+                    this.books.splice(index,1);
+                }
+            },
+            // 过滤器
+            filters: {
+                showPrice(price) {
+                    return '￥' + price.toFixed(2)
+                }
+            }
+        })
+    </script>
+</body>
+</html>

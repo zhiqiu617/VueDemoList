@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- 响应式的数组方法 -->
+        <ul>
+            <li v-for = "item in arr">{{item}}</li>
+        </ul>
+        <button @click = "btnClick">操作测试</button>
+    </div>
+    <script src = "../vue/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                arr: ['a', 'b', 'c', 'd', 'e']
+            },
+            methods: {
+                btnClick() {
+                    // 1. push()---在尾部插入新元素---页面内容直接被修改
+                    // this.arr.push('aaa');
+                    
+                    // 2. 通过索引值直接修改数组中的元素---页面无变化，但console中查看可见修改内容
+                    // this.arr[0] = 'bbb';
+                    // （1）可以用splice()替代
+                    // this.arr.splice(0, 0, 'bbb');
+                    // （2）可以用set(要修改的对象，索引值，修改后的值)替代
+                    Vue.set(this.arr, 0, 'bbb')
+                    
+                    // 3. pop()---删除最后一个元素---页面直接更新
+                    // this.arr.pop();
+
+                    // 4. shift()---删除第一个元素---页面更新同步
+                    // this.arr.shift();
+
+                    // 5. unshift()---在首位插入新元素---页面更新同步
+                    // 插入新元素时，可一次插入多个
+                    //this.arr.unshift('ccc','ddd');
+
+                    // 6. splice()---删除/替换/插入元素---页面更新同步
+                    //    splice(start)
+                    // （1） 删除元素：第二个参数传入要删除的元素数量，如果没有传入，就删除后面所有元素
+                    // 从第三个位置开始删除元素到最后
+                    // const start = 2;
+                    // this.arr.splice(start, this.arr.length - start); 
+                    // （2） 替换元素：第二个参数为要替换的元素个数，后面跟着替换的新元素
+                    // 删除第2，3，4个元素，同时插入三个新元素
+                    // this.arr.splice(1, 3, 'm', 'n', 'l');
+                    // （3） 插入元素：第二个参数为0，后跟着要插入的元素
+                    // this.arr.splice(1, 0, 'eee', 'fff');
+
+                    // 7. sort()---排序---页面更新同步
+                    // this.arr.sort();
+
+                    // 8. reverse()---翻转整个数组---页面更新同步
+                    // this.arr.reverse();
+                }
+            }
+        })
+
+        // 可变参数
+        // function sum(...num) {
+        //     // 所有传入的参数都将存储在num数组内
+        //     console.log(num);            
+        // }
+        // sum(1,2,3,4,5,6,7)
+    </script>
+</body>
+</html>

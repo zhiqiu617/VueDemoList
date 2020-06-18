@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id = "app">
+        <ul>
+            <!-- 当数组元素都是唯一且对数组的增删查改较多时，可以为每个元素绑定一个:key属性，作唯一标识 -->
+            <!-- :key属性与Vue的虚拟DOM的Diff算法有关，作用在于高效的更新虚拟DOM，例如在插入新元素时，可以直接找到确定的插入节点 -->
+            <!-- 在没有绑定key的时候，插入一个新元素的内部操作比较繁琐，如在'b'和'c'之间插入一个'f'，需要将值'f'赋值到'c'的位置，
+                 值'c'赋值到'd'的位置，再在数组末端插入值'd' -->
+            <li v-for = "item in books" :key = "item">{{item}}</li>
+        </ul>
+    </div>
+    <script src = "../vue/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                books: ['a', 'b', 'c', 'd']
+            }
+        })
+    </script>
+</body>
+</html>

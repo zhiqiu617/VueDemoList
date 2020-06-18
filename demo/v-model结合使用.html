@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- 1. v-model与checkbox结合使用 -->
+        <!-- (1) checkbox单选框 -->
+        <label for="agree">
+            <input type="checkbox" id="agree" v-model="isAgree">同意协议
+        </label>
+        <h3>您选择的是：{{isAgree}}</h3>
+        <button :disabled="!isAgree">下一步</button>
+        <br>
+
+        <!-- (2) checkbox多选框 -->
+        <!-- v-model是将input的value值与数据hobbies绑定并且相互更新 -->
+        <input type="checkbox" value="篮球" v-model="hobbies">篮球
+        <input type="checkbox" value="足球" v-model="hobbies">足球
+        <input type="checkbox" value="羽毛球" v-model="hobbies">羽毛球
+        <input type="checkbox" value="网球" v-model="hobbies">网球
+        <input type="checkbox" value="乒乓球" v-model="hobbies">乒乓球
+        <h3>您的爱好是：{{hobbies}}</h3>
+
+        <!-- 2. v-model与radio结合使用 -->
+        <!-- 此处name属性相同，可让单选框互斥，即放在同一个选择中，实现单选；若name不同则不互斥，点击后都可显示被选择 -->
+        <!-- 当此处同时存在v-model和name时，name可以去掉，v-model可代替name使得单选框互斥 -->
+        <label for="male">
+            <input type="radio" id="male" name="sex" value="男" v-model="sex">男
+        </label>
+        <label for="female">
+            <input type="radio" id="female" name="sex" value="女" v-model="sex">女
+        </label>
+        <h3>您的性别是：{{sex}}</h3>
+
+        <!-- 3. v-model与select结合使用 -->
+        <!-- (1) 选择一个 -->
+        <select name="fruit" id="fruit" v-model="fruit">
+            <option value="苹果">苹果</option>
+            <option value="香蕉">香蕉</option>
+            <option value="葡萄">葡萄</option>
+            <option value="橙子">橙子</option>
+            <option value="哈密瓜">哈密瓜</option>
+        </select>
+        <h3>您选择的水果是：{{fruit}}</h3>
+
+         <!-- (2) 选择多个 -->
+         <!-- **********此处select的multiple属性失效********** -->
+         <select name="fruits" id="fruits" v-model="fruits" multiple="multiple">
+            <option value="苹果">苹果</option>
+            <option value="香蕉">香蕉</option>
+            <option value="葡萄">葡萄</option>
+            <option value="橙子">橙子</option>
+        </select>
+        <h3>您选择的水果是：{{fruits}}</h3>
+        
+
+    </div>
+    <script src = "../vue/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                isAgree: false,
+                hobbies: [],
+                // 若此处设置值，则选项处对应值会被默认选中
+                sex: '',  
+                fruit: '橙子',
+                fruits: []
+            },
+            methods: {
+                valueChange(event) {
+                    this.message = event.target.value
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>父组件与子组件的通信</title>
+</head>
+<body>
+    <!-- 父子组件通信，通过props向子组件传递数据；通过事件向父组件发送消息 -->
+    <!-- 父子组件通信，Vue实例（充当父组件）与其子组件通信，两者过程相同 -->
+
+    <!-- props声明需要从父组件接收到的数据，有两种用法 -->
+    <!-- 1. 字符串数组，数组中的字符串就是传递时的名称 -->
+    <!-- 2. 对象，对象可以设置传递时的类型，也可以设置默认值 -->
+    <!-- (1) 对象写法中可验证的类型包括（String、Number、Boolean、Array、Object、Date、Function、Symbol） -->
+    <!-- (2) 除了默认可验证类型外，当有自定义构造函数时，验证支持自定义类型 -->
+
+    <div id="app">
+        <!-- 此处会有不支持驼峰标识的情况，可以用-转换一下 -->
+        <cpn1 :c1title="title" :c1movies="movies"></cpn1>
+        <cpn2 :c2title="title" :c2movies="movies" :c2nums="num"></cpn2>
+        <!-- <cpn2 :c2title="title" :c2movies="movies"></cpn2>报错---c2nums的required属性为true，必须要绑定显示 -->
+    </div>
+
+    <template id="cpn1">
+        <div>
+            <h2>{{c1title}}</h2>
+            <h3>{{c1movies}}</h3>
+        </div>
+    </template>
+    <template id="cpn2">
+        <div>
+            <h2>{{c2title}}</h2>
+            <h3>{{c2nums}}</h3>
+            <ul>
+                <li v-for="item in c2movies">{{item}}</li>
+            </ul>
+        </div>
+    </template>
+
+    <script src="../vue/vue.js"></script>
+    <script>
+        // 子组件
+        const cpn1 = {
+            template: '#cpn1',
+            // props的字符串数组写法
+            props: ['c1title', 'c1movies']
+        }
+        const cpn2 = {
+            template: '#cpn2',
+            // props的对象写法,可设置类型、默认值；"null"匹配任何类型
+            props: {
+                c2title: String, 
+                c2nums: {
+                    type: Number,
+                    required: true    //强制通信，若该数据没有传递显示，则会报错
+                },
+                // 当类型是数组或对象时，默认值必须是一个函数
+                c2movies: {
+                    type: Array,
+                    default() {
+                        return []
+                    }
+                }
+            }
+        }
+
+        // 自定义类型限制
+        // function Person(firstName, lastName) {
+        //     this.firstName = firstName;
+        //     this.lastName = lastName;
+        // }
+        // Vue.component('blog-post',{
+        //     props: {
+        //         author: person,
+        //         str: {
+        //             validator: function(value) {
+        //             // 该值必须匹配以下字符串中的一个
+        //             return ['success', 'warning', 'danger'].indexOf(value) !== -1
+        //         }
+        //         }
+                
+        //     }
+        // })
+
+        // root组件
+        const app = new Vue({
+            el: '#app',
+            data: {
+                title: '父子组件通信',
+                movies: ['神探', '楚门的世界', '我不是药神', '告白'],
+                num: 123
+            },
+            components: {
+                cpn1,     //增强写法
+                cpn2
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <span v-if="isUser">
+            <!-- "for" 属性可把 label 绑定到另外一个元素,其值与另一元素的id属性值相同 -->
+            <!-- 如果在 label 元素内点击文本，浏览器就会自动将焦点转到和标签相关的表单控件上 -->
+            <label for="users">用户账号</label>
+            <!-- <input type="text" id="users" placeholder="用户账号"> -->
+            <input type="text" id="users" placeholder="用户账号" key="users">
+        </span>
+        <span v-else>
+            <label for="emails">用户邮箱</label>
+            <!-- <input type="text" id="emails" placeholder="用户邮箱"> -->
+            <input type="text" id="emails" placeholder="用户邮箱" key="emails">
+        </span>
+        <!-- 上面两个例子中的key属性主要是作为唯一标识 -->
+        <!-- 在没有key属性的时候，若用户输入内容后在按切换类型，则切换后这些内容会继续留在框内 -->
+        <!-- 原因：Vue在进行DOM渲染的时候，为了性能考虑，会尽可能地复用先前存在的元素，而不是创建新元素 -->
+        <!-- 例子中，Vue内部发现原来的input标签不再使用，于是将它直接复用到v-else里面 -->
+        <!-- 因此若不想被复用，则可添加key属性区分，但要保证值的唯一性 -->
+        <button @click="isUser = !isUser">切换类型</button>
+    </div>
+    <script src = "../vue/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                isUser: true
+            }
+        })
+    </script>
+</body>
+</html>

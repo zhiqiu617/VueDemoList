@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h2>1. 编程范式：命令式编程(Imperative)/声明式编程(Declarative)</h2> 
+        <h3>1.1 命令式编程---主要思想是关注计算机执行的步骤，即一步一步告诉计算机先做什么再做什么。</h3>
+        <h5>例子---在一个数字集合 collection(变量名) 中筛选大于 5 的数字，你需要这样告诉计算机：</h5>
+        <h5>第一步，创建一个存储结果的集合变量 results；</h5>            
+        <h5>第二步，遍历这个数字集合 collection；</h5> 
+        <h5>第三步：一个一个地判断每个数字是不是大于 5，如果是就将这个数字添加到结果集合变量 results 中。</h5>
+        <h5>代码实现如下：</h5>  
+        <p>List&lt;int&gt; results = new List&ltint&gt;();</p>
+        <p>foreach(var num in collection){</p>
+        <p>if (num > 5)</p>        
+        <p>results.Add(num);</p>            
+        <p>}</p>    
+        
+        <h3>1.2 声明式编程---是以数据结构的形式来表达程序执行的逻辑。它的主要思想是告诉计算机应该做什么，但不指定具体要怎么做。</h3>
+        <h4>（1） SQL，网页编程中用到的 HTML 和 CSS 也都属于声明式编程。</h4>
+        <h4>（2） 特点---不需要创建变量用来存储数据；不包含循环控制的代码如 for， while。</h4>
+        <p>例子---SELECT * FROM collection WHERE num > 5</p>
+
+        <h2>2. 编程范式：面向对象编程（第一公民：对象）/函数式编程(Functional)（第一公民：函数）</h2> 
+        <h3>2.1 函数式编程---和声明式编程是有所关联的，因为他们思想是一致的：即只关注做什么而不是怎么做。但函数式编程不仅仅局限于声明式编程。</h3>
+        <h4>（1） 函数式编程最重要的特点是“函数第一位”，即函数可以出现在任何地方</h4>
+        <h4>（2） 比如你可以把函数作为参数传递给另一个函数，不仅如此你还可以将函数作为返回值。</h4>            
+        <h4>（3） 大部分常见的编程语言已经提供了对这种编程方式的支持，比如 JavaScript，再有 C# 中的 LINQ 和 Java 中的 Lambda 和闭包的概念。</h4> 
+        <h4>（4） 函数式编程把数据和逻辑封装到函数中而不是类与对象中。每个函数完全独立，好的函数式设计，每个函数都是一个纯函数（pure function，即输入固定参数，即可得到相同输入的函数）。</h4>
+        <h5>例子---同样的逻辑用 Java 8 的 Stream 方式写如下：</h5>  
+        <p>List&lt;Number&gt; results = collection.stream()</p>
+        <p>.filter(n -> n > 5)</p>
+        <p>.collect(Collectors.toList());</p>
+
+        <h3>2.2 面向对象编程---强调的是对象和消息</h3>
+        <h4>（1） 面向过程（Procedure Oriented 简称PO ：如C语言）---将一个问题拆分为若干步骤方法，然后按照一定的的顺序执行每个方法</h4>
+        <h4>（2） 面向对象（Object Oriented简称OO ：如C++，JAVA等语言）分析问题里面有哪些对象，然后给对象赋一些属性和方法，然后让每个对象去执行自己的方法</h4>
+
+    </div>
+    <script src="编程范式.js"></script>
+</body>
+</html>

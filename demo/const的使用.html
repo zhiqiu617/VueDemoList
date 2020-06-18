@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 1. const修饰的标识符被赋值后，不可修改
+        // const name = 'abc';
+        // name = 'def';
+        
+        // 2. 在使用const定义标识符时，必须同时进行赋值
+        // const name;
+
+        // 3. 常量的含义是所指向的对象不能修改，但对象内部属性可修改
+        const obj = {
+            name: 'lily',
+            age: 18,
+            height: 170
+        }
+        console.log(obj);
+
+        obj.name = 'banny';
+        obj.age = 19;
+        obj.height = 169;
+        console.log(obj);
+        
+        // ES6之前没有块级作用域的概念，所以var定义变量在很多情况下会被任意修改，如if和for中，限制修改只能借助函数作用域完成
+        // ES6后出现let与const，存在块级作用域，以往出现在if与for中的问题被更好地解决
+    </script>
+</body>
+</html>

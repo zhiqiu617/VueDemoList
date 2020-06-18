@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id = "app">
+        <!-- v-on参数问题 -->
+        <br>{{counter}}</br>
+        <!-- 当通过methods定义方法，以供@click调用时，参数存在的两种情况 -->
+        <!-- 1. 方法不需要额外的参数时，方法后面的括号可省略 -->
+        <!--    但其中还会存在一个默认的参数，将原生事件的event参数传递进去 -->
+        <!-- 2. 若需要传递额外的参数，则在后面的括号添加参数 -->
+        <!--    若同时需要传递event时，则在添加参数时，通过$event传递 -->
+        <button @click = "btnClick1">+1</button>
+        <button @click = "btnClick2(5)">+5</button>
+        <button @click = "btnClick2(10, $event)">+10</button>
+    </div>
+    <br>
+    <div id = "app1" @click = "divClick">
+        <!-- v-on修饰符 -->
+        <!-- (1) .stop  调用event.stopPropagation() -->
+        <!-- 此时产生事件冒泡情况，即点击按钮，btnClick与divClick方法均被调用 -->
+        <button @click = "btnClick">测试按钮1</button>  
+        <!-- 在事件监听的时候加上.stop修饰符，可以阻止事件冒泡 -->
+        <button @click.stop = "btnClick">测试按钮2</button> 
+        <br> 
+
+        <!-- (2) .prevent  调用event.preventDefault()，阻止默认行为 -->
+        <form action="baidu">
+            <input type="submit" value = "提交" @click.prevent = "submitClick">
+        </form>
+        <br>
+
+        <!-- (3) .{keyCode | keyAlias}  （键的代码或简称）只当事件是从特定键触发时才会触发回调 -->
+        <!-- 监听回车键，keyup为键被松开弹起时触发，keydown为按下时 -->
+        <input type="text" @keyup.enter = "keyUp">
+        <input type="text" @keyup.13 = "keyUp">
+        <br>
+
+        <!-- (4) .once  只触发一次回调 -->
+        <button @click.once = "btnClick">测试按钮3</button>
+
+        <!-- 修饰符可串联使用 -->
+        <button @click.stop.once = "btnClick">测试按钮4</button>
+
+        <!-- (5) .native  监听组件根元素的原生事件  -->
+
+    </div>
+    <script src = "../vue/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                counter: 0
+            },
+            methods: {
+                btnClick1(event) {
+                    console.log(event);                    
+                    this.counter++
+                },
+                // 若函数需要参数，但没有传入时，则函数的形参为undefined
+                btnClick2(i,event) {
+                    console.log(event);
+                    console.log(i);                                        
+                    this.counter += i
+                }
+            }
+        });
+        const app1 = new Vue({
+            el: '#app1',
+            data: {
+                counter: 0
+            },
+            methods: {
+                btnClick() {
+                    console.log('btnClick'); 
+                },
+                divClick() {
+                    console.log('divClick');
+                },
+                submitClick() {
+                    console.log('submitClick');
+                    
+                },
+                keyUp() {
+                    console.log('keyUp');
+                    
+                }
+            }
+        })
+    </script>
+</body>
+</html>

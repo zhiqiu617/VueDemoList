@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件的简单创建与使用</title>
+</head>
+<body>
+    <!-- 组件化---将一个页面分成多个组件，每个组件用于实现页面的一个功能块，而每个组件还可以进行细分 -->
+    <!-- 组件化思想是为了将页面的功能拆分，每个功能块独立完成自己的功能，从而简化整个页面的管理与维护 -->
+    <!-- 组件(component)实现分三步---（创建组件构造器对象）---（注册组件）---（使用组件） -->
+    <!-- ***注意***组件必须挂靠在某个通过new Vue产生的Vue根实例中使用，否则不起效果 -->
+
+    <div id="app1">
+        <!-- 3. 使用组件，组件是可复用的Vue实例 -->
+        <cpn-one></cpn-one>
+        
+        <cpn></cpn>
+    </div>
+    <div id="app2">
+        <cpn-one></cpn-one>
+        
+        <!-- 作为app1的局部组件，在此处不可用 -->
+        <cpn></cpn>
+    </div>
+
+    <script src="../vue/vue.js"></script>
+    <script>
+        // 1. 创建组件构造器对象，Vue.extend()的写法在Vue2.x的文档内几乎没有了，后面使用语法糖代替
+        // 传入template自定义需要的模板
+        // 若模板中存在很多标签，则需要有一个根标签将所有标签包起来
+        const cpn1 = Vue.extend({
+            template: 
+                `<div>
+                    <h2>组件的简单创建与使用</h2>
+                    <p>全局组件</p>
+                </div>`
+        })
+        const cpn2 = Vue.extend({
+            template: 
+                `<div>
+                    <h2>组件的简单创建与使用</h2>
+                    <p>局部组件</p>
+                </div>`
+        })
+
+        // 2. 注册组件---Vue.component(注册组件的标签名,组件构造器)，此时产生的是全局组件
+        Vue.component('cpn-one',cpn1)
+
+        // 组件语法糖，将一二步合并
+        // 全局组件语法糖
+        // Vue.component('cpn-one',{
+        //     template: 
+        //         `<div>
+        //             <h2>组件的简单创建与使用</h2>
+        //             <p>全局组件</p>
+        //         </div>`
+        // })
+
+        const app1 = new Vue({
+            el: '#app1',
+            // 此时注册的是局部组件
+            components: {
+                cpn: cpn2
+            }
+            // 局部组件语法糖
+            // components: {
+            //     'cpn': {
+            //         template: 
+            //             `<div>
+            //                 <h2>组件的简单创建与使用</h2>
+            //                 <p>局部组件</p>
+            //             </div>`
+            //     }
+            // }
+
+        })
+        const app2 = new Vue({
+            el: '#app2'
+        })
+    </script>
+</body>
+</html>
