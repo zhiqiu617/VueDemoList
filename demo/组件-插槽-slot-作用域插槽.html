@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插槽的使用：作用域插槽</title>
+    <style>
+        .div-border {
+            border-bottom: 1px solid green;
+        }
+    </style>
+</head>
+<body>
+    <!-- 有时候组件模板中会绑定数据显示，而父组件引用模板时可能需要修改数据展示方式，但因为作用域问题父组件无法直接获取子组件的数据 -->
+    <!-- 该情况下可以使用作用域插槽slot-scope，将子组件中所有绑定的内容获取过来 -->
+    <!-- 作用域插槽---父组件替换插槽标签，但子组件提供内容 -->
+
+    <div id="app">
+        <cpn>
+            <!-- 获取子组件中的planguage数据 -->
+            <template slot-scope="language">
+                <!-- 修改数据显示格式 -->
+                <span v-for="item in language.data">* {{item}} *</span>
+            </template>
+        </cpn>
+        <cpn>
+            <template slot-scope="language">
+                <span>{{language.data.join(' - ')}}</span>
+            </template>
+        </cpn>
+        <cpn></cpn>
+    </div>
+
+    <template id="cpn">
+       <div class="div-border">
+           <!-- 绑定planguage数据 -->
+            <slot :data="planguage">
+                <ul>
+                    <li v-for="item in planguage">{{item}}</li>
+                </ul>
+            </slot>
+       </div>
+    </template>
+
+    <script src="../vue/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            components: {
+                cpn: {
+                    template: '#cpn',
+                    data() {
+                        return {
+                            planguage: ['JS', 'Java', 'C++', 'C#', 'Python', 'Go']
+                        }
+                    },
+                    created() {
+                        // 将数组元素用“ - ”分隔，形成一个字符串
+                        this.planguage.join(' & ');
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

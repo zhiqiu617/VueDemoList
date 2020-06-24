@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 父子组件访问 -->
+    <!-- 父组件通过$children或$refs访问子组件；子组件通过$parent访问父组件，通过$root访问根组件 -->
+
+    <!-- this.$children是一个数组类型，包含了所有子组件对象 -->
+    <!-- this.$refs是一个对象类型，默认一个空对象，用ref="name"标识 -->
+    <!-- 一般情况下使用$refs，因为使用数组下标获取不太便利，修改时较麻烦 -->
+
+    <div id="app">
+        <cpn></cpn>
+        <cpn></cpn>
+        <button @click="btn1Click">按钮</button>
+        <cpn ref="aaa"></cpn>
+        <button @click="btn2Click">按钮</button>
+    </div>
+
+    <template id="cpn">
+        <div>我是子组件</div>
+    </template>
+
+    <script src="../vue/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+
+            },
+            methods: {
+                btn1Click() {
+                    // 使用$children直接访问子组件
+                    console.log(this.$children);    
+                    // 遍历所有子组件 
+                    for(let c of this.$children) {
+                        c.showMessage();    
+                        console.log(c.name);
+                    }    
+                    // 下标代表第几个子组件，从0开始
+                    this.$children[1].showMessage();     
+                },
+                btn2Click() {
+                    // 使用$refs直接访问子组件
+                    console.log('aaa', this.$refs.aaa);
+                    
+                }
+            },
+            components: {
+                cpn: {
+                    template: '#cpn',
+                    data() {
+                        return {
+                            name: '我是子组件data中的name'
+                        }
+                    },
+                    methods: {
+                        showMessage() {
+                            console.log('showMessage');                            
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插槽的使用：slot与slot-scope</title>
+</head>
+<body>
+    <!-- 组件的插槽是为了让组件具有更好的扩展性，在使用过程中可以决定一些内容怎么展示（抽取共性，保留不同） -->
+    <!-- 比如将导航栏封装成一个组件，应用在不同页面，但不同页面需要的导航栏功能不完全一样，这时使用插槽就可以预留位置，根据具体页面展示不一样的功能 -->
+    <!-- 在VUE 2.6.0之前，插槽的使用是slot与slot-scope实现的，而2.6.0+更改为使用v-slot，弃用原有的具名插槽和作用域插槽 -->
+    <div id="app">
+        <cpn><button>按钮</button></cpn>
+        <cpn><span>根据父组件的需求不同，放入相同位置的不同内容</span></cpn>
+        <cpn>
+            <i>若引用模板时，替换内容不止一个元素，</i>
+            <b>则插槽会将所有内容一并放入插槽中进行展示</b>
+        </cpn>
+        <cpn></cpn>
+    </div>
+
+    <template id="cpn">
+       <div>
+            <h2>插槽的使用：slot与slot-scope</h2>
+            <slot><strong>组件模板内使用插槽，可以先定义默认内容，若引用模板时没有修改替换的，则显示默认内容</strong></slot>
+       </div>
+    </template>
+
+    <script src="../vue/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            components: {
+                cpn: {
+                    template: '#cpn'
+                }
+            }
+        })
+    </script>
+</body>
+</html>

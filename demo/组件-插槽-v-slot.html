@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插槽的使用：v-slot</title>
+    <style>
+        .div-border {
+            border-bottom: 1px solid green;
+        }
+    </style>
+</head>
+<body>
+    <!-- 在VUE 2.6.0之后，插槽更改为使用v-slot，弃用原有的具名插槽和作用域插槽，即用v-slot替换slot与slot-scope -->
+    <!-- 1. 插槽的名字从slot="slotName变为由v-slot:slotName实现 -->
+    <!-- (1) v-slot只能用在template或自定义组件上；这与slot不同,slot可用在父组件的<template>中或用在一个普通的标签中 -->
+    <!-- (2) 没有名字的<slot>标签都有一个隐含的值default，若想显示调用，则可使用v-slot:default，同样地，这将改变所有没有name的<slot>标签 -->
+    
+    <!-- 2. 作用域插槽由原来的slot-scope="slotProps"更改为v-slot="slotProps"，slotProps为绑定在slot上的属性集合 -->
+    <!-- (1) 要获取的插槽有名字时需要使用v-slot:slotName="slotProps"，若没有名字，则还可以写为v-slot:default="slotProps" -->
+    <!-- (2) 默认插槽的缩写语法不能与具名插槽混用，避免作用域混乱 -->
+    <!-- (3) 当插槽name属性存在时，若要获取子组件数据，需要保证name的值没有大写，即避免使用驼峰命名法 -->
+    
+    <div id="app">
+        <!-- 插槽名字的运用 -->
+        <cpn v-slot:left><h3>左边</h3></cpn>
+        <cpn v-slot:right><h3>右边</h3></cpn>
+        <cpn v-slot:default><h3>默认</h3></cpn>
+
+        <!-- v-slot不能用在普通标签内部 -->
+        <!-- <cpn><h3 v-slot:center>中间</h3></cpn> -->
+
+        <!-- 插槽作用域的更换 -->
+        <!-- 此处username为子组件<slot>标签的name属性值，写成userName没有效果 -->
+        <cpn v-slot:username="slotProps"><h3>{{slotProps.data.firstName}}</h3></cpn>
+
+    </div>
+
+    <template id="cpn">
+       <div class="div-border">
+            <h2>插槽的使用：v-slot</h2>
+            <slot name="left"><span>left</span></slot>
+            <slot name="center"><span>center</span></slot>
+            <slot name="right"><span>right</span></slot>
+            <slot><span>default-1</span></slot>
+            <slot><span>default-2</span></slot>
+
+            <slot name="username" :data="users">{{users.lastName}}</slot>
+       </div>
+    </template>
+
+    <script src="../vue/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            components: {
+                cpn: {
+                    template: '#cpn',
+                    data() {
+                        return {
+                            users: {
+                                firstName: 'Benny',
+                                lastName: 'Brown'
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

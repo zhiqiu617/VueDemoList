@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插槽的使用：具名插槽</title>
+    <style>
+        .div-border {
+            border-bottom: 1px solid green;
+        }
+    </style>
+</head>
+<body>
+    <!-- 当模板拥有多个插槽时，父组件替换值时没有区分，就会将所有插槽进行替换 -->
+    <!-- 所有让插槽带上name属性，区分每个插槽，引用时替换就可以指定插槽替换 -->
+    <!-- 有name属性的和没有name属性的插槽同时存在时，父组件中的替换元素会将没有name属性的插槽都替换掉，而有name属性的则还是模板中默认的值 -->
+    
+    <div id="app">
+        <cpn><span>没有name属性的引用</span></cpn>
+        <cpn><span slot="middle">替换中间</span></cpn>
+        <cpn></cpn>
+    </div>
+
+    <template id="cpn">
+       <div class="div-border">
+            <slot name="top"><h3>上</h3></slot>
+            <slot name="middle"><h3>中</h3></slot>
+            <slot><h3>下</h3></slot>
+            <slot><h3>下</h3></slot>
+       </div>
+    </template>
+
+    <script src="../vue/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            components: {
+                cpn: {
+                    template: '#cpn'
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件-编译作用域</title>
+</head>
+<body>
+    <!-- 编译作用域---父组件模板中的所有东西在父级作用域内编译，子组件模板中的所有东西在子级作用域内编译 -->
+
+    <div id="app">
+        <!-- 此处的<cpn>标签的使用是在父组件内完成的，所以作用域是父组件，使用的属性也属于父组件的内容。所以isShow为Vue实例中的数据 -->
+        <cpn v-show="isShow"></cpn>
+    </div>
+
+    <template id="cpn">
+       <div>
+           <h3>子组件内容</h3>
+           <!-- 此处的<button>标签位于子组件模板内，故作用域是该子组。所以isShow为子组件中的数据 -->
+           <button v-show="isShow">展示测试</button>
+       </div>
+    </template>
+
+    <script src="../vue/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                isShow: true
+            },
+            components: {
+                cpn: {
+                    template: '#cpn',
+                    data() {
+                        return {
+                            isShow: false
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>
