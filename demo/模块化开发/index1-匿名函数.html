@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h2>模块化开发</h2>
+        <h3>匿名函数的使用解决多个文件中全局变量重名问题</h3>
+        <p>在实际开发中，通常会将代码组织在多个JS文件中进行维护，这样就会出现一些避免不了的问题，比如全局变量的使用</p>
+        <p>此外，这样的代码编写方式对JS文件的依赖顺序是强制性的，所以要同时弄清楚这些文件的排列顺序，但也无法避免同样的问题发生</p>
+        
+        <h4>对此，可以将需要暴露在外的变量用一个模块作为出口。基础封装步骤如下：</h4>
+        <p>（1） 在匿名函数内部定义一个对象</p>
+        <p>（2） 给对象添加各种需要暴露在外的属性和方法（不需要暴露的直接定义即可）</p>
+        <p>（3） 最后将这个对象返回，并且在外面使用一个moduleA接收</p>
+        <p>这样，在别的JS文件中就可以进行引用</p>
+
+        <h4>目前，前端模块化开发已经有了很多规范及对应的实现方案，可以直接使用</h4>
+        <h4>常见的模块化规范如：CommonJS、AMD、CMD、ES6的Modules</h4>
+    </div>
+    <script src="aaa.js"></script>
+    <script src="bbb.js"></script>
+    <script src="mmm.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h2>模块化开发</h2>
+        <h3>了解CommonJS实现模块化开发</h3>
+        <h4>CommonJS定义的模块分为:{模块引用(require)} {模块定义(exports)} {模块标识(module)}</h4>
+        <h4>require()用来引入外部模块；exports对象用于导出当前模块的方法或变量，唯一的导出口；module对象就代表模块本身。</h4>
+        <p><a href="https://www.jianshu.com/p/434c247759bc">CommonJS中exports和module.exports的区别</a></p>
+        <p><a href="https://www.w3cschool.cn/zobyhd/1ldb4ozt.html">W3C-CommonJS</a></p>
+       
+        <h4>CommonJS的导出</h4>
+        <p>module.exprots = {</p>
+        <p>&emsp;flag: true,</p>
+        <p>&emsp;test(a, b) {</p>
+        <p>&emsp;&emsp;return a + b;</p>
+        <p>&emsp;},</p>
+        <p>&emsp;demo(a, b) {</p>
+        <p>&emsp;&emsp;return a * b;</p>
+        <p>&emsp;}</p>
+        <p>}</p>    
+
+        <h4>CommonJS的导入</h4>
+        <p>let { test, demo, flag } = require('moduleA');</p>
+    </div>
+</body>
+</html>
