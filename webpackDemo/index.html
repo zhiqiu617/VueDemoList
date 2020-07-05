@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>webpack模块化管理的基础使用</title>
+</head>
+<body>
+    <div>
+        <h3>一、webpack的使用准备</h3>
+        <ol>
+            <li>因为webpack需要在node的环境下才能使用，所以在此之前要先安装node。</li>
+            <li>查看当前node版本，v10.16.0。保证在8.9.0以上，避免后续某些使用无效果。</li>
+            <li>使用npm的"npm install webpack@3.6.0 -g"安装全局webpack，版本3.6.0，用于学习。版本4以后有命令改动，且某些命令被隐藏。</li>
+        </ol>
+
+        <h3>二、webpack模块化管理与资源打包</h3>
+        <ol>
+            <li>在终端或系统cmd处，使用"webpack ./src/main.js ./dist/bundle.js"命令，表示将src目录内的main.js文件打包并生成一个bundle.js文件放入dist目录。</li>
+            <li>开发过程中会创建许多js文件，它们之间相互引用形成依赖，打包时命令只有一个文件被打包，但实际上若文件中有导入导出的引用时，webpack会去寻找所有的引用，并管理它们的依赖关系，最终生成完整的打包文件放入dist中。</li>
+        </ol>
+
+        <h3>三、webpack的webpack.config.js文件</h3>
+        <ol>
+            <li>webpack.config.js文件是为了让webpack工作的时候自主在这里寻找出入口，通过这里的定义生成bundle.js。</li>
+            <li>这样，不需要在终端使用命令"webpack ./src/main.js ./dist/bundle.js"进行打包，以"webpack"命令代替。</li>
+        </ol>
+
+        <h3>四、webpack与node</h3>
+        <ol>
+            <li>当webpack需要用到node内部的东西时，需要在终端使用命令"npm init"先进行初始化及相关配置，最后会生成一个package.json文件。</li>
+            <li><b>在package.json文件的脚本scripts位置，写入一个"build":"webpack"，这样就可以将打包命令从"webpack"改为"npm run build"。</b></li>
+            <li>"npm run build"命令执行时，会去找build的内容，然后得到真正的命令运行。这相当于建立起映射。</li>
+            <li><b>注意，只要是终端，无论cmd还是软件内部终端，"webpack"命令直接执行都是用的全局版本；
+                而npm run这样的用法默认先去脚本那里找本地的webpack，若没有本地的再去找全局的。
+                因此开发中要注意版本、全局和本地的区分，本地与全局的webpack最好都安装有。</b></li>
+            <li>本地的及局部使用的webpack，安装时直接在项目路径下进行。</li>
+        </ol>
+
+        <h3>五、开发时依赖和运行时依赖</h3>
+        <ol>
+            <li>很多东西是我们开发时需要的依赖，但运行时不需要。而webpack在我们运行项目时已经不需要了，我们只有在打包过程中用到webpack。</li>
+            <li>所以安装局部webpack时，安装命令使用"npm install webpack@3.6.0 --save-dev"，后面的指令"--save-dev"指安装用在开发时依赖。</li>
+            <li>安装完成后，package.json文件会出现一个"devDependencies"，是指开发时依赖；而运行时依赖则会存在一个"dependencies"。</li>
+        </ol>
+        
+        <ul>npm install过程中可能会卡在checking installable status不动，可能原因有:
+            <li>(1) 修改过仓库源（淘宝源之类的）</li>
+            <li>(2) 远程仓库连接</li>
+            <li>(3) 旧的npm缓存与项目冲突</li>
+        </ul>
+        <b>此次遇到的是第三个原因，执行"npm cache verify"命令清除缓存，安装通过</b>
+
+        <h3>六、loader</h3>
+        <h4>6.1 css文件模块化处理</h4>
+        <h4>6.1.1 css-loader</h4>
+        <ol>
+            <li>执行命令"npm install --save-dev css-loader"安装有关于css的loader，版本3.6.0</li>
+            <li>在webpack.config.js文件中添加相关配置module: {rules[...]}</li>
+            <li><b>css-loader只负责将css文件进行加载</b></li>
+        </ol>
+        <h4>6.1.2 style-loader</h4>
+        <ol>
+            <li>
+                <p>执行命令"npm install --save-dev style-loader"安装，版本1.2.1</p>
+                <i>安装时出现错误："npm ERR! A complete log of this run can be found in: C:\Users\Administrator\AppData\Roaming\npm-cache\_logs\2020-06-27T12_46_31_487Z-debug.log"</i>
+                <p>解决：全局更新npm，执行命令"npm i npm -g"</p>
+            </li>
+            <li>在webpack.config.js文件中配置，在use内添加'style-loader'</li>
+            <li><b>style-loader负责将样式添加到DOM中</b></li>
+        </ol>
+        <h4>安装并配置完两个loader后，在main.js文件引用需要的css文件，然后重新打包项目，可查看到样式效果</h4>
+        <b>
+            两个loader在配置文件中的顺序要注意，按照从右到左的读取顺序应该写为use:['style-loader', 'css-loader']。
+            先用css-loader处理再到style-loader处理，如果顺序反了，打包时会查出语法错误，提示内部代码不可用。
+        </b>
+
+        <h4>6.2 less文件模块化处理</h4>
+        <ol>
+            <li>
+                <p>执行命令"npm install --save-dev less-loader less"安装</p>
+                <b>这里要安装两个东西，less-loader用来加载less文件；最后的less是表明还要安装一个less工具，用来解析转化less文件</b>
+                <p>less-loader版本4.1.0（版本过高运行可能会出错）；less版本3.11.3</p>
+            </li>
+            <li>在webpack.config.js文件中进行相关规则配置，相关配置查看官网文档</li>
+        </ol>
+
+        <h4>6.3 图片文件模块化处理</h4>
+        <h4>6.3.1 url-loader</h4>
+        <ol>
+            <li>执行命令"npm install --save-dev url-loader"安装，版本4.1.0</li>
+            <li>在webpack.config.js进行相关规则配置</li>
+            <li>
+                <b>url-loader会将图片编译成base64字符串形式，转换后形成的字符串不需要另外的文件进行存储</b>
+            </li>
+        </ol>
+        <h4>6.3.2 file-loader</h4>
+        <ol>
+            <li>执行命令"npm install --save-dev file-loader"安装，版本6.0.0</li>
+            <li>在webpack.config.js的output内部设置publicPath</li>
+            <li>
+                <b>
+                    file-loader会将完整图片当成文件模块进行加载打包，加载完毕后放入dist目录。
+                    放入目录的图片文件会重新命名，以哈希字符自动生成名字，确保文件名称的唯一性。
+                </b>
+            </li>
+            <li>
+                <i>
+                    图片加载渲染时仍然会找到原来css文件中引用的图片路径，这样会使图片找不到，
+                    因为真正要渲染的是dist内生成的图片资源，因此要设置publicPath，让加载时修改图片路径。
+                </i>
+            </li>
+            <li>
+                在webpack.config.js的rules内配置name: 'img/[name].[hash:8].[ext]'，用于规范自动生成的图片资源的命名。
+                <b>这个值的意思是把资源放入dist/img目录下，名字是原名称.八位hash值.后缀名</b>
+            </li>
+        </ol>
+        <b>
+            两个loader处理url形式的图片资源区别在于设置的limit大小，即图片限制大小。
+            若小于limit则用url-loader；若大于则用file-loader。
+            url-loader会将图片转为base64字符串，只适合小图，比较模糊；而file-loader是将图片打包，有原图效果，适合大图。
+        </b>
+
+        <h4>6.4 用babel将ES6转换为ES5</h4>
+        <ol>
+            <li>
+                执行命令"npm install --save-dev babel-loader@7 babel-core babel-preset-es2015"安装三个东西。
+                <p>babel-loader版本7.1.5；babel-core版本6.26.3；babel-preset-es2015（对ES6进行相关配置）版本6.24.1</p>
+            </li>
+            <li>在webpack.config.js的rules下进行相关配置</li>
+        </ol>
+
+
+        
+    </div>
+
+    <!-- 通过webpack的模块化管理，生成dist内的包文件，引用时直接引用dist中的即可 -->
+    <script src="./dist/bundle.js"></script>
+</body>
+</html>

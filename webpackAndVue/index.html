@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>webpack使用Vue的配置过程</title>
+</head>
+<body>
+    <div id="app">
+    </div>
+
+    <div>
+        <h3>一、安装及配置Vue</h3>
+        <p>使用npm安装Vue，执行命令"npm install vue --save"，版本2.6.11。因为一直需要用到Vue依赖，所以不需要特定安装开发时依赖的版本，即命令中去掉"-dev"。</p>
+       
+        <h3>二、导入Vue</h3>
+        <ol>
+            <li>在需要的js文件内import Vue，并创建Vue实例挂载到某个页面标签中</li>
+            <li>
+                <ul>Vue在构建发布版本的时候构建了两类版本---runtime-only和runtime-compiler
+                    <li>runtime-only版本---代码中不可以有任何template。默认该版本。</li>
+                    <li>runtime-compiler版本---代码中可以有template，因为有compiler用于编译template。</li>
+                </ul>
+            </li>
+            <li>
+                <i>
+                    因此直接run build会报错（[Vue warn]: You are using the runtime-only build of Vue where the template compiler is not available. 
+                    Either pre-compile the templates into render functions, or use the compiler-included build.(found in &lt;Root&gt;)）
+                </i>
+                <p>
+                    <b>
+                        当进行import vue操作时，会先去webpack.config.js内查找是否有指定的文件夹指定vue版本等配置内容，若没有设置，则会默认runtime-only版本。
+                        因此，需要在配置文件加上resolve设置来指定寻找vue的文件夹。设置alias:{'vue$': 'vue/dist/vue.esm.js'}，这样就会指引去到node_modules/vue内部查找指定版本。
+                    </b>
+                </p>
+            </li>
+        </ol>
+
+        <h3>三、使用vue进行组件化开发</h3>
+        <ol>
+            <li>
+                原先开发我们会把代码都放入html文件内，但是一般情况下index.html文件不做改动。
+                <b>因此，我们可以把页面和功能代码都放入创建vue实例的main.js文件中，以组件的形式编写代码。</b>
+            </li>
+            <li>
+                然而上述方式一会让整个vue实例显得太过臃肿。
+                <b>所以可以将实例内的模板部分抽离到实例外面，使用组件的编写方式。</b>
+            </li>
+            <li>
+                方式二中虽然解决了实例简化的问题，但是main.js文件依旧比较复杂，包含各类代码。
+                <b>
+                    可以创建一个vue目录，内部都是存放模板及其数据和相关操作的js文件，
+                    并做一个export default导出，然后在main.js文件进行引用，并在vue实例中进行挂载操作。
+                </b>
+            </li>
+            <li>
+                方式三将vue实例与组件模板分离了，但还存在一个问题，即js代码与html代码是放在一起的，当代码量较大时，会比较混乱。
+                <b>至此，引入方式四，即创建.vue文件，将html、js与css代码分为三部分编写，实现模板、script部分、style部分分离。</b>
+            </li>
+        </ol>
+
+        <h3>四、.vue文件的封装处理</h3>
+        <ol>
+            <li>
+                执行命令"npm install --save-dev vue-loader vue-template-compiler"安装相关loader。
+                vue-loader版本16.0.0-beta.4；vue-template-compiler版本2.6.11。
+                <p>
+                    <i>注意，vue-loader从14版本开始，使用的时候需要另外安装一个插件。</i>
+                    <ul>
+                        <li>可以修改一下package.json文件中的对应版本配置，改为^13.0.0，然后执行命令"npm install"进行更新。</li>
+                        <li>可以从网上查找安装插件的方法。</li>
+                    </ul>
+                </p>
+            </li>
+            <li>在webpack.config.js文件的rules进行相关配置。</li>
+        </ol>
+    </div>
+
+    <!-- 通过webpack的模块化管理，生成dist内的包文件，引用时直接引用dist中的即可 -->
+    <script src="./dist/bundle.js"></script>
+</body>
+</html>

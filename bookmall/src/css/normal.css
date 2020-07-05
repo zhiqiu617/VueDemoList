@@ -1,0 +1,10 @@
+body {
+    background: url('../img/timg.jpg');
+}
+b {
+    color: blue;
+}
+
+.testStyle {
+    border: 1xp solid pink;
+}
